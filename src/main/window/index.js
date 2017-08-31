@@ -17,7 +17,7 @@ class Window {
     }
     console.log('home', win)
     var homeWindow = windowManager.createNew('home', 'Welcome ...', homeURL, false, {
-      'width': 998,
+      'width': 900,
       'height': 600,
       'showDevTools': true,
       'resizable': true
@@ -40,6 +40,13 @@ class Window {
     })
     // settingWindow.create()
     return settingWindow
+  }
+  getWebContentsByName(name) {
+    var win = windowManager.get(name)
+    if (win !== false) {
+      return win.object.webContents
+    }
+    return false
   }
 }
 

@@ -3,28 +3,43 @@
   "env": {
     "main": {
       "presets": [
-        ["env", {
-          "targets": { "node": 7 }
-        }],
-        "stage-0"
+        [
+          "env",
+          {
+            "targets": {
+              "node": 7
+            }
+          }
+        ],
+        "stage-0",
+        "es2016",
+        "es2017"
       ]
     },
     "renderer": {
       "presets": [
-        ["env", {
-          "modules": false
-        }],
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ],
         "stage-0"
       ]
     },
     "web": {
       "presets": [
-        ["env", {
-          "modules": false
-        }],
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ],
         "stage-0"
       ]
     }
   },
-  "plugins": ["transform-runtime"]
+  "plugins": [
+    "transform-runtime"
+  ]
 }
