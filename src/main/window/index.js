@@ -1,6 +1,5 @@
 'use strict'
 import windowManager from 'electron-window-manager'
-// import menu from './menu'
 const homeURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080/index.html`
   : `file://${__dirname}/index.html`
@@ -16,14 +15,13 @@ class Window {
       return win
     }
     console.log('home', win)
-    var homeWindow = windowManager.createNew('home', 'Welcome ...', homeURL, false, {
+    var homeWindow = windowManager.createNew('home', 'Welcome PPic ...', homeURL, false, {
       'width': 900,
       'height': 600,
-      'showDevTools': true,
-      'resizable': true
+      'showDevTools': false,
+      'resizable': false
     })
     // homeWindow.create()
-    // menu.init()
     return homeWindow
   }
   setting() {
@@ -32,11 +30,11 @@ class Window {
       return win
     }
     console.log('setting', win)
-    var settingWindow = windowManager.createNew('setting', 'Welcome ...', settingURL, false, {
+    var settingWindow = windowManager.createNew('setting', 'Welcome PPic ...', settingURL, false, {
       'width': 600,
       'height': 450,
-      'showDevTools': true,
-      'resizable': true
+      'showDevTools': false,
+      'resizable': false
     })
     // settingWindow.create()
     return settingWindow

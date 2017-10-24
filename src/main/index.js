@@ -2,11 +2,14 @@ import { app, ipcMain, BrowserWindow, globalShortcut } from 'electron'
 import window from './window'
 import db from './db'
 import msg from './message'
+import menu from './window/menu.js'
+import autoupdate from './update'
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
+
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
@@ -16,33 +19,17 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow() {
-  /**
-   * Initial window options
-   */
-  // mainWindow = new BrowserWindow({
-  //   height: 563,
-  //   useContentSize: true,
-  //   width: 1000
-  // })
+setTimeout(autoupdate, 5000)
 
-  // mainWindow.loadURL(winURL)
-
-  // mainWindow.on('closed', () => {
-  //   mainWindow = null
-  // })
-  db.init()
+async function createWindow() {
+  await db.init()
   msg.init()
-  let item = {
-    storeName: '七牛', accessKey: 'y9Ehh4K2i6o4IjCu8kvo0dT319kk2MS3Xbx6O9nJ', secretKey: 'V-fzA71AJ1oRnLHcJN4YAYl7yoOaz2kFW0MuakJj',
-    bucket: 'resources', origin: 'up-z1.qiniu.com', url: 'img.j2do.com'
-  }
-  // db.addQiniu(item)
-  // db.addPic1(item)
-  globalShortcut.register('CommandOrControl+Ctrl+C', () => {
-    console.log('CommandOrControl+Ctrl+C is pressed')
-    msg.picsUpload(null, { replyMsg: 'pics-upload-reply' })
-  })
+  // let item = {
+  //   storeName: '七牛', accessKey: 'y9Ehh4K2i6o4IjCu8kvo0dT319kk2MS3Xbx6O9nJ', secretKey: 'V-fzA71AJ1oRnLHcJN4YAYl7yoOaz2kFW0MuakJj',
+  //   bucket: ' ', origin: 'up-z1.qiniu.com', url: 'img.j2do.com'
+  // }
+
+  menu()
   window.home().open()
 }
 

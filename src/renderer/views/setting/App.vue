@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Menu class="ppic-menu" mode="horizontal" active-name="2" @on-select="changeSelect">
+    <Menu class="ppic-menu" mode="horizontal" active-name="1" @on-select="changeSelect">
       <Menu-item name="1">
         <div class="ppic-menu-item">
           <Icon type="home"></Icon>
@@ -23,44 +23,22 @@
     <div class="ppic-setting-body">
       <GeneralConfig v-if="activeName=='1'"></GeneralConfig>
       <PicConfig v-if="activeName=='2'"></PicConfig>
-      <div v-if="activeName=='3'">
-        3333
-      </div>
+      <About v-if="activeName=='3'"></About>
     </div>
   </div>
 </template>
 <script>
 import PicConfig from '../../components/Setting/PicConfig'
 import GeneralConfig from '../../components/Setting/GeneralConfig'
+import About from '../../components/Setting/About'
 export default {
   name: 'Setting',
   components: {
-    PicConfig, GeneralConfig
+    PicConfig, GeneralConfig, About
   },
   data() {
     return {
-      activeName: "2",
-      autostart: true,
-      autozip: true,
-      columns: [
-        {
-          title: '图床类型',
-          key: 'name'
-        }
-      ],
-      storages: [
-        { name: '七牛' }
-      ],
-      supportStorages: [
-        {
-          value: 'qiniu',
-          label: '七牛'
-        },
-        {
-          value: 'tencent',
-          label: '万象优图'
-        }
-      ]
+      activeName: "1"
     }
   },
   methods: {

@@ -2,15 +2,17 @@ import sqlite3 from 'sqlite3'
 import fs from 'fs'
 import fecha from 'fecha'
 import Sequelize from 'sequelize'
+import { app } from 'electron'
 class db {
   constructor() {
     this.sequelize = null
     this.storage = null
     this.image = null
   }
-  init = () => {
+  init = async () => {
+    let dataDir = app.getPath('appData') + '/' + app.getName() + '/data'
     try {
-      fs.mkdirSync('./data')
+      fs.mkdirSync(dataDir)
     } catch (e) {
       if (e.code !== 'EEXIST') {
         return
@@ -20,7 +22,7 @@ class db {
     this.sequelize = new Sequelize(null, null, null, {
       dialect: 'sqlite',
       // SQLite only
-      storage: 'data/ppic.db'
+      storage: dataDir + '/ppic.db'
     })
     this.image = this.sequelize.define(
       'image',
@@ -65,7 +67,7 @@ class db {
         accessKey: Sequelize.STRING,
         secretKey: Sequelize.STRING,
         bucket: Sequelize.STRING,
-        origin: Sequelize.STRING,
+        origin: Sequelize.STRING, //其实存储的是uploadurl，懒得改名字了...
         url: Sequelize.STRING,
         storeType: {
           type: Sequelize.STRING,
@@ -77,6 +79,37 @@ class db {
       console.error('Unable to connect to the database:', err);
     })
 
+    this.config = this.sequelize.define(
+      'config',
+      {
+        id: {
+          type: Sequelize.INTEGER,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        config: Sequelize.STRING(1024)
+      }
+    )
+    this.config.sync().catch(err => {
+      console.error('Unable to connect to the database:', err);
+    })
+    let config = { autostart: false, autozip: { on: false, level: 5 }, shortcut: 'ctrl+meta+c', storages: [1] }
+    let ret = await this.config.findById(1)
+    if (ret === null) {
+      await this.config.create({ id: 1, config: JSON.stringify(config) })
+    }
+    // try {
+    //   this.config.findOrCreate({
+    //     where: {
+    //       id: 1
+    //     },
+    //     defaults: {
+    //       config: 
+    //     }
+    //   })
+    // } catch (error) {
+    //   console.log('db init config', error)
+    // }
   }
 
   getStorage = async () => {
@@ -135,6 +168,26 @@ class db {
       throw new Error('Image Fetch Error')
     }
     return ret
+  }
+
+  async updateConfig(config) {
+    let task = await this.config.findById(1)
+    task.config = JSON.stringify(config)
+    let ret = await task.save({ fields: ['config'] })
+    console.log('updateConfig', ret)
+    return ret;
+  }
+
+  async fetchConfig() {
+    try {
+      let ret = await this.config.findById(1)
+      let config = JSON.parse(ret.config)
+      // console.log('fetchConfig2', config)
+      return config;
+    } catch (error) {
+      console.log('fetchConfig', error)
+    }
+
   }
 }
 export default new db

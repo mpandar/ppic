@@ -3,33 +3,42 @@ import { nativeImage, clipboard } from 'electron'
 import fecha from 'fecha'
 import md5 from 'md5'
 import db from '../db'
+import PPicError from '../error'
 class storage {
   constructor() {
     this.type = null
     this.id = null
     this.storages = []
+    this.storageIndex = 0
   }
 
   init(storages, config) {
-    this.type = config.type
-    this.id = config.id
+    // this.type = config.type
+    // this.id = config.id
+    // console.log('init storages config', config)
     this.storages = []
-    if (this.type == 'point') {
-      for (let s of storages) {
-        if (s.id == this.id) {
-          let connect = this.connect(s)
-          this.storages.push(connect)
-        }
+    for (let s of storages) {
+      if (config.storages.includes(s.id)) {
+        let connect = this.connect(s)
+        this.storages.push(connect)
       }
     }
-    console.log('init storages', this.storages)
+    // console.log('init storages', this.storages)
   }
-  * getStorageInstance() {
-    while (1) {
-      for (let instance of this.storages) {
-        yield instance
+  getStorageInstance() {
+    if (this.storages.length == 0) {
+      throw new PPicError(PPicError.InVaildStorage)
+    }
+    if (this.storageIndex >= this.storages.length) {
+      this.storageIndex = 0
+    }
+    for (let key in this.storages) {
+      if (key == this.storageIndex) {
+        this.storageIndex++
+        return this.storages[key]
       }
     }
+
   }
   connect(storage) {
     switch (storage.storeType) {
@@ -41,14 +50,14 @@ class storage {
     throw new Error('Unknow Storage Type!')
   }
   async upload(arg) {
-    let instance = this.getStorageInstance().next().value
+    let instance = this.getStorageInstance()
     arg.img = arg.img ? nativeImage.createFromPath(arg.img) : clipboard.readImage()
     let picInfo = this.getUploadInfo(arg)
-    console.log('upload info', picInfo)
+    // console.log('upload info', picInfo)
     //uplaod to qiniu
     let ret = await instance.upload(arg.img, picInfo.filename)
     if (ret.error !== undefined) {
-      throw new Error(ret.error)
+      throw new PPicError(ret.error.code, ret.error.msg)
     }
     picInfo.storeType = instance.storeType
     picInfo.url = instance.url + '/' + picInfo.filename

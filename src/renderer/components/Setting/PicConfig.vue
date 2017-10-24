@@ -28,7 +28,13 @@
       </Input>
       <br>
       <Input size="small" v-model='currentStorage.origin'>
-      <span slot="prepend">Origin</span>
+      <Select @on-change="selectUploadUrl" slot="append" style="width: 80px" placement="top">
+        <Option value="http://up-z2.qiniup.com">华南</Option>
+        <Option value="http://up.qiniup.com">华东</Option>
+        <Option value="http://up-z1.qiniup.com">华北</Option>
+        <Option value="http://up-na0.qiniup.com">北美</Option>
+      </Select>
+      <span slot="prepend">Upload URL</span>
       </Input>
       <br>
       <Input size="small" v-model='currentStorage.url'>
@@ -73,10 +79,10 @@ export default {
           value: 'qiniu',
           label: '七牛'
         },
-        {
-          value: 'tencent',
-          label: '万象优图'
-        }
+        // {
+        //   value: 'tencent',
+        //   label: '万象优图'
+        // }
       ],
       currentStorage: {
       },
@@ -122,9 +128,13 @@ export default {
           replyMsg: 'storage-remove-reply',
           from: 'setting'
         })
+    },
+    selectUploadUrl(value) {
+      this.$set(this.currentStorage, 'origin', value)
+      console.log(this.currentStorage)
     }
   },
-  beforeMount: function () {
+  beforeMount: function() {
     ipcRenderer.send('storage-config', { replyMsg: 'storage-config-reply', from: 'setting' })
     ipcRenderer.on('storage-config-reply', (event, arg) => {
       console.log('item', arg)
@@ -149,7 +159,7 @@ export default {
     ipcRenderer.on('storage-remove-reply', (event, arg) => {
       console.log('item', arg)
       this.currentStorage = {}
-      this.storages = this.storages.filter(function (obj) {
+      this.storages = this.storages.filter(function(obj) {
         return arg.id !== obj.id;
       });
       this.confirmRemove = false
