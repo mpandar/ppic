@@ -122,6 +122,15 @@ export default {
 </script>
 
 <style lang="scss">
+.vue-waterfall-slot {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.vue-waterfall{
+  position: relative;
+}
 .ppic-main-body {
   margin: 0.1rem 0;
   overflow-y: auto;
