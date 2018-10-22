@@ -25,11 +25,11 @@
 import { shell } from 'electron'
 export default {
   name: 'About',
-  data() {
+  data () {
     return {}
   },
   methods: {
-    openUrl: function() {
+    openUrl: function () {
       shell.openExternal('https://segmentfault.com/a/1190000010604983?_ea=2350630')
     }
   }

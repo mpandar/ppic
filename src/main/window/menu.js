@@ -26,7 +26,7 @@ const template = [
     submenu: [
       {
         label: '了解更多',
-        click() { require('electron').shell.openExternal('https://www.j2do.com') }
+        click () { require('electron').shell.openExternal('https://www.j2do.com') }
       }
     ]
   }
@@ -40,7 +40,7 @@ if (process.platform === 'darwin') {
       { type: 'separator' },
       {
         label: '偏好设置...',
-        click() {
+        click () {
           window.setting().open()
         }
       },
@@ -57,4 +57,3 @@ let menu = function () {
   Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 }
 export default menu
-

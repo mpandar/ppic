@@ -1,13 +1,13 @@
-const fs = require('fs');
-const download = require('download');
 import http from 'http'
 import { app, ipcMain } from 'electron'
 import message from '../message'
 import url from 'url'
 import md5File from 'md5-file'
 import PPicError from '../error'
+const fs = require('fs')
+const download = require('download')
 
-function compareVersion(left, right) {
+function compareVersion (left, right) {
   try {
     let vleft = left.split('.')
     let vright = right.split('.')
@@ -19,10 +19,9 @@ function compareVersion(left, right) {
   } catch (error) {
     console.log('compareVersion error', error)
   }
-
 }
 
-function checkVersion() {
+function checkVersion () {
   let t = Date.now()
   // console.log('done!!', 'http://img.j2do.com/update.json?' + t);
   // download('http://img.j2do.com/update.json?' + t + '&attname=#(Content-Disposition: inline)', 'dist').then(data => {
@@ -49,8 +48,8 @@ function checkVersion() {
   }
   console.log('options', options)
   var req = http.request('http://img.j2do.com/update.json?' + t, (res) => {
-    res.setEncoding("utf-8");
-    res.on("data", (data) => {
+    res.setEncoding('utf-8')
+    res.on('data', (data) => {
       try {
         let update = JSON.parse(data)
         // let current = JSON.parse(fs.readFileSync('package.json'))
@@ -60,22 +59,21 @@ function checkVersion() {
           let arg = { replyMsg: 'new-version' }
           message.replyMsg(arg, update)
         }
-
       } catch (error) {
         console.log('checkVersion error', error)
         throw new PPicError(PPicError.GetUpdatePackage, error)
       }
-    });
-  });
-  req.on("error", function (err) {
-    console.log("error", err.message);
+    })
+  })
+  req.on('error', function (err) {
+    console.log('error', err.message)
     throw new PPicError(PPicError.GetUpdatePackage, err.message)
-  });
-  req.end();
+  })
+  req.end()
 }
 
 ipcMain.on('download', async (event, arg) => {
-  console.log('done!', arg.file.url);
+  console.log('done!', arg.file.url)
   let file = process.env.HOME + '/Downloads' + url.parse(arg.file.url).pathname
   console.log('download', fs.existsSync(file), md5File.sync(file), arg.file.md5, md5File.sync(file) == arg.file.md5)
 
@@ -94,7 +92,7 @@ ipcMain.on('download', async (event, arg) => {
 })
 
 let autoupdate = function () {
-  console.log("autoupdate check", process.env.HOME)
+  console.log('autoupdate check', process.env.HOME)
   checkVersion()
 }
 

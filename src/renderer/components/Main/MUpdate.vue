@@ -23,7 +23,7 @@
 import { ipcRenderer, remote, shell, clipboard } from 'electron'
 export default {
   name: 'MUpdate',
-  data() {
+  data () {
     return {
       upgrade: {},
       updateModal: false,
@@ -32,41 +32,40 @@ export default {
     }
   },
   methods: {
-    getUrlByPlatform: function() {
+    getUrlByPlatform: function () {
       let process = remote.process
-      console.log("process.platform", process.platform)
+      console.log('process.platform', process.platform)
       switch (process.platform) {
         case 'darwin':
           return this.upgrade.mac
       }
     },
-    download: function() {
+    download: function () {
       let file = this.getUrlByPlatform()
       ipcRenderer.send('download', { replyMsg: 'download-reply', file: file, udpate: this.upgrade.update })
       this.updateModal = false
     },
-    downloadByBrowser: function() {
+    downloadByBrowser: function () {
       let file = this.getUrlByPlatform()
       clipboard.writeText(file.url)
       console.log('downloadByBrowser', file)
-      this.$Message.success('已复制下载地址到剪切板，如果自动调用下载失败，请手动复制后下载！Mac下Chrome加迅雷下载失败，请使用Safrai！');
+      this.$Message.success('已复制下载地址到剪切板，如果自动调用下载失败，请手动复制后下载！Mac下Chrome加迅雷下载失败，请使用Safrai！')
       setTimeout(() => {
         shell.openExternal(file.url, false)
       }, 3000)
-
     },
-    cancel: function() {
+    cancel: function () {
       this.updateModal = false
       this.upgradeConfirm = false
     },
-    onOk: function() {
+    onOk: function () {
       shell.openItem(this.downloadFile)
     },
-    onCancel: function() {
-      this.$Message.success('升级文件 ' + this.downloadFile + ' 已下载，请手动更新！');
+    onCancel: function () {
+      this.$Message.success('升级文件 ' + this.downloadFile + ' 已下载，请手动更新！')
     }
   },
-  mounted: function() {
+  mounted: function () {
     ipcRenderer.on('download-reply', (event, arg) => {
       this.downloadFile = arg.file
       this.upgradeConfirm = true
@@ -78,7 +77,7 @@ export default {
       this.$Modal.success({
         title: 'PPic有新版本更新啦（v' + arg.version + '）',
         content: arg.update
-      });
+      })
     })
   }
 }

@@ -30,7 +30,7 @@ import Mousetrap from 'mousetrap'
 import 'mousetrap/plugins/record/mousetrap-record.min.js'
 export default {
   name: 'GeneralConfig',
-  data() {
+  data () {
     return {
       config: {
         autostart: false,
@@ -41,34 +41,34 @@ export default {
         shortcut: 'Command+Ctrl+C'
       },
       storages: [],
-      shortcutTitle: "点我后直接按键"
+      shortcutTitle: '点我后直接按键'
     }
   },
   methods: {
-    saveConfig: function() {
-      console.log("config", this.config)
-      ipcRenderer.send('update-config', { replyMsg: 'update-config-reply', from: "setting", config: this.config })
+    saveConfig: function () {
+      console.log('config', this.config)
+      ipcRenderer.send('update-config', { replyMsg: 'update-config-reply', from: 'setting', config: this.config })
     },
-    changeShortCut: function() {
-      this.shortcutTitle = "请按下快捷键（请注意，如果显示按键与您实际按键不一致，是由于快捷键冲突，请重按！）"
+    changeShortCut: function () {
+      this.shortcutTitle = '请按下快捷键（请注意，如果显示按键与您实际按键不一致，是由于快捷键冲突，请重按！）'
       Mousetrap.record((sequence) => {
         // sequence is an array like ['ctrl+k', 'c']
         console.log(this.config, sequence)
-        this.shortcutTitle = "点我后直接按键"
+        this.shortcutTitle = '点我后直接按键'
         this.$set(this.config, 'shortcut', sequence.join('+'))
-      });
+      })
     }
   },
-  beforeMount: function() {
-    ipcRenderer.send('app-config', { replyMsg: 'app-config-reply', from: "setting" })
+  beforeMount: function () {
+    ipcRenderer.send('app-config', { replyMsg: 'app-config-reply', from: 'setting' })
     ipcRenderer.on('app-config-reply', (event, arg) => {
       console.log('app-config-reply', arg)
       this.config = arg.config
       this.storages = arg.storages
     })
     ipcRenderer.on('update-config-reply', (event, arg) => {
-      ipcRenderer.send('shortcut-regist', { shortcut: this.config.shortcut, replyMsg: null, from: "setting" })
-      this.$Message.success('保存成功');
+      ipcRenderer.send('shortcut-regist', { shortcut: this.config.shortcut, replyMsg: null, from: 'setting' })
+      this.$Message.success('保存成功')
     })
   }
 }

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       platform: os.platform(),
       versions: process.versions

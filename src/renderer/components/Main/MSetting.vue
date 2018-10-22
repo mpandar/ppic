@@ -11,7 +11,7 @@
 import { ipcRenderer } from 'electron'
 export default {
   name: 'MSetting',
-  data() {
+  data () {
     return {
     }
   },

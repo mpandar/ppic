@@ -3,7 +3,7 @@ import db from '../db'
 import window from '../window'
 import storage from '../storage'
 class message {
-  constructor() {
+  constructor () {
     this.regist('storage-config')
     this.regist('storage-save')
     this.regist('storage-remove')
@@ -15,7 +15,7 @@ class message {
     this.regist('pics-fetch')
     this.regist('shortcut-regist')
   }
-  init() {
+  init () {
     this.initStorage()
   }
   initStorage = async () => {
@@ -24,14 +24,14 @@ class message {
     // console.log('storageConfig', ret)
     storage.init(ret, config)
   }
-  regist(sendMsg) {
+  regist (sendMsg) {
     let method = sendMsg.replace(/-(\w)/g, function (all, letter) {
       return letter.toUpperCase()
     })
     ipcMain.on(sendMsg, this[method])
   }
   replyMsg = (arg, params = {}) => {
-    arg.from = arg.from == undefined ? 'home' : arg.from
+    arg.from = arg.from === undefined ? 'home' : arg.from
     let ipc = window.getWebContentsByName(arg.from)
     ipc.send(arg.replyMsg, params)
   }
@@ -40,9 +40,9 @@ class message {
     this.replyMsg(arg, ret)
   }
   storageSave = async (event, arg) => {
-    delete arg.storage.createdAt;
-    delete arg.storage.updatedAt;
-    let ret = null;
+    delete arg.storage.createdAt
+    delete arg.storage.updatedAt
+    let ret = null
     if (arg.storage.id) {
       ret = await db.updateStorage(arg.storage)
     } else {
@@ -70,7 +70,7 @@ class message {
   }
 
   picsFetch = async (event, arg) => {
-    let size = arg.size != undefined ? arg.size : 20
+    let size = arg.size !== undefined ? arg.size : 20
     let ret = await db.fetchPicsByPage(arg.page, size)
     this.replyMsg(arg, ret)
   }
@@ -81,7 +81,7 @@ class message {
   }
 
   updateConfig = async (event, arg) => {
-    let config = await db.updateConfig(arg.config)
+    await db.updateConfig(arg.config)
     this.initStorage()
     this.replyMsg(arg)
   }
@@ -100,4 +100,4 @@ class message {
     ipc.send('ppic-error', msg)
   }
 }
-export default new message
+export default new message()

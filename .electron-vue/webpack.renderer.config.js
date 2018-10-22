@@ -8,8 +8,9 @@ const webpack = require('webpack')
 
 const BabiliWebpackPlugin = require('babili-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { VueLoaderPlugin } = require('vue-loader')
 
 /**
  * List of node_modules to include in webpack bundle
@@ -32,11 +33,31 @@ let rendererConfig = {
   module: {
     rules: [
       {
+        test: /\.(js|vue)$/,
+        enforce: 'pre',
+        exclude: /node_modules/,
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            formatter: require('eslint-friendly-formatter')
+          }
+        }
+      },
+      {
+        test: /\.scss$/,
+        use: ['vue-style-loader', 'css-loader', 'sass-loader']
+      },
+      {
+        test: /\.sass$/,
+        use: ['vue-style-loader', 'css-loader', 'sass-loader?indentedSyntax']
+      },
+      {
+        test: /\.less$/,
+        use: ['vue-style-loader', 'css-loader', 'less-loader']
+      },
+      {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: 'css-loader'
-        })
+        use: ['vue-style-loader', 'css-loader']
       },
       {
         test: /\.html$/,
@@ -58,8 +79,9 @@ let rendererConfig = {
           options: {
             extractCSS: process.env.NODE_ENV === 'production',
             loaders: {
-              scss: 'style-loader!css-loader!sass-loader',
-              sass: 'style-loader!css-loader!sass-loader?indentedSyntax'
+              sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax=1',
+              scss: 'vue-style-loader!css-loader!sass-loader',
+              less: 'vue-style-loader!css-loader!less-loader'
             }
           }
         }
@@ -70,8 +92,16 @@ let rendererConfig = {
           loader: 'url-loader',
           query: {
             limit: 10000,
-            name: 'imgs/[name].[ext]'
+            name: 'imgs/[name]--[folder].[ext]'
           }
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'media/[name]--[folder].[ext]'
         }
       },
       {
@@ -80,7 +110,7 @@ let rendererConfig = {
           loader: 'url-loader',
           query: {
             limit: 10000,
-            name: 'fonts/[name].[ext]'
+            name: 'fonts/[name]--[folder].[ext]'
           }
         }
       }
@@ -91,7 +121,8 @@ let rendererConfig = {
     __filename: process.env.NODE_ENV !== 'production'
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    new VueLoaderPlugin(),
+    new MiniCssExtractPlugin({filename: 'styles.css'}),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: path.resolve(__dirname, '../src/renderer/views/main/index.ejs'),
@@ -154,10 +185,7 @@ if (process.env.NODE_ENV === 'production') {
   rendererConfig.devtool = ''
 
   rendererConfig.plugins.push(
-    new BabiliWebpackPlugin({
-      removeConsole: true,
-      removeDebugger: true
-    }),
+    new BabiliWebpackPlugin(),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '../static'),

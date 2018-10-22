@@ -1,7 +1,7 @@
 import qn from 'qn'
 import PPicError from '../../error'
 class Qiniu {
-  constructor(accessKey, secretKey, bucket, origin, url) {
+  constructor (accessKey, secretKey, bucket, origin, url) {
     this.client = null
     this.accessKey = accessKey
     this.secretKey = secretKey
@@ -11,7 +11,7 @@ class Qiniu {
     this.url = url
     console.log('Qiniu', accessKey, secretKey, bucket, origin)
   }
-  connect() {
+  connect () {
     if (this.client) return this.client
     // console.log('qiniu connect', this.client)
     try {
@@ -32,7 +32,7 @@ class Qiniu {
     return this.client
   }
 
-  upload(img, fileName, width, height) {
+  upload (img, fileName, width, height) {
     let client = this.connect()
     // console.log('qiniu upload', this.client)
     let buffer = img.toJPEG(50)

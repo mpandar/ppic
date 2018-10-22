@@ -45,7 +45,7 @@ export default {
   },
   name: 'MBody',
   props: ['copyLinkUrl', 'copyMarkdownUrl', 'selectImage'],
-  data() {
+  data () {
     return {
       page: 1,
       noMore: false,
@@ -62,44 +62,45 @@ export default {
     }
   },
   methods: {
-    scrollToButtom: function() {
-      let ele = this.$el;
-      console.log("scrollTop,scrollHeight", ele.scrollTop, ele.scrollHeight)
+    scrollToButtom: function () {
+      let ele = this.$el
+      console.log('scrollTop,scrollHeight', ele.scrollTop, ele.scrollHeight)
       if (ele.scrollTop + 510 > ele.scrollHeight) {
         this.picsFetchMore()
       }
     },
-    picsFetchMore: function() {
+    picsFetchMore: function () {
       if (this.loading || this.noMore) return
       this.loading = true
       ipcRenderer.send('pics-fetch',
         {
-          page: this.page, size: 10,
+          page: this.page,
+          size: 10,
           replyMsg: 'pics-fetch-reply'
         })
     },
-    editRemark: function(item) {
+    editRemark: function (item) {
       this.editor.currentItem = item
       this.editor.remark = item.remark
       this.editor.modal = true
     },
-    editOk: function() {
+    editOk: function () {
       this.editor.currentItem.remark = this.editor.remark
     },
-    getUrl: function(url) {
+    getUrl: function (url) {
       let str = 'http://'
       return str + url.trim()
     }
   },
-  updated: function() {
-    let waterfall = this.$refs.waterfall.$el;
+  updated: function () {
+    let waterfall = this.$refs.waterfall.$el
     console.log(this.$refs.waterfall.$el)
     if (waterfall.scrollHeight > 0 && (waterfall.scrollHeight < this.$el.scrollHeight)) {
       this.picsFetchMore()
     }
-    console.log("scrollTop,scrollHeight", waterfall.scrollHeight, this.$el.scrollHeight)
+    console.log('scrollTop,scrollHeight', waterfall.scrollHeight, this.$el.scrollHeight)
   },
-  beforeMount: function() {
+  beforeMount: function () {
     this.picsFetchMore()
     ipcRenderer.on('pics-fetch-reply', (event, arg) => {
       if (arg.rows.length) {
@@ -115,7 +116,7 @@ export default {
     ipcRenderer.on('pics-upload-reply', (event, arg) => {
       this.images.count++
       this.images.rows.unshift(arg)
-      this.$Message.success('上传成功');
+      this.$Message.success('上传成功')
     })
   }
 }

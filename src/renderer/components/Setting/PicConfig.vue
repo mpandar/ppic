@@ -65,7 +65,7 @@
 import { ipcRenderer } from 'electron'
 export default {
   name: 'PicConfig',
-  data() {
+  data () {
     return {
       columns: [
         {
@@ -78,7 +78,7 @@ export default {
         {
           value: 'qiniu',
           label: '七牛'
-        },
+        }
         // {
         //   value: 'tencent',
         //   label: '万象优图'
@@ -90,10 +90,10 @@ export default {
     }
   },
   methods: {
-    changeSelect(name) {
+    changeSelect (name) {
       this.activeName = name
     },
-    addStorage(item) {
+    addStorage (item) {
       console.log('addStorage', item)
       if (item.value != '') {
         this.currentStorage = {}
@@ -102,11 +102,11 @@ export default {
       }
       this.$refs.storageSelect.clearSingleSelect()
     },
-    editStorage(currentRow, oldCurrentRow) {
+    editStorage (currentRow, oldCurrentRow) {
       this.currentStorage = currentRow
       console.log(currentRow, oldCurrentRow)
     },
-    saveStorage() {
+    saveStorage () {
       ipcRenderer.send('storage-save',
         {
           storage: this.currentStorage,
@@ -114,14 +114,14 @@ export default {
           from: 'setting'
         })
     },
-    confirmRemoveStorage() {
+    confirmRemoveStorage () {
       if (this.storages.length <= 1) {
-        this.$Message.warning('请至少保留一个存储图床');
+        this.$Message.warning('请至少保留一个存储图床')
         return
       }
       this.confirmRemove = true
     },
-    removeStorage() {
+    removeStorage () {
       ipcRenderer.send('storage-remove',
         {
           id: this.currentStorage.id,
@@ -129,12 +129,12 @@ export default {
           from: 'setting'
         })
     },
-    selectUploadUrl(value) {
+    selectUploadUrl (value) {
       this.$set(this.currentStorage, 'origin', value)
       console.log(this.currentStorage)
     }
   },
-  beforeMount: function() {
+  beforeMount: function () {
     ipcRenderer.send('storage-config', { replyMsg: 'storage-config-reply', from: 'setting' })
     ipcRenderer.on('storage-config-reply', (event, arg) => {
       console.log('item', arg)
@@ -150,22 +150,21 @@ export default {
         this.storages = this.storages.map(t => {
           return t.id === arg.id
             ? arg
-            : t;
-        });
+            : t
+        })
       }
-      this.$Message.success('图床『' + arg.storeName + '』已经保存成功！');
+      this.$Message.success('图床『' + arg.storeName + '』已经保存成功！')
       this.currentStorage = arg
     })
     ipcRenderer.on('storage-remove-reply', (event, arg) => {
       console.log('item', arg)
       this.currentStorage = {}
-      this.storages = this.storages.filter(function(obj) {
-        return arg.id !== obj.id;
-      });
+      this.storages = this.storages.filter(function (obj) {
+        return arg.id !== obj.id
+      })
       this.confirmRemove = false
-      this.$Message.success('图床『' + arg.storeName + '』已经删除！');
+      this.$Message.success('图床『' + arg.storeName + '』已经删除！')
     })
-
   }
 }
 </script>

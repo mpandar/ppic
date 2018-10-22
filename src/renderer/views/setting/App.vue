@@ -36,16 +36,16 @@ export default {
   components: {
     PicConfig, GeneralConfig, About
   },
-  data() {
+  data () {
     return {
-      activeName: "1"
+      activeName: '1'
     }
   },
   methods: {
-    changeSelect(name) {
+    changeSelect (name) {
       this.activeName = name
     },
-    addStorage(value) {
+    addStorage (value) {
       console.log(this.$refs.storageSelect)
       this.$refs.storageSelect.clearSingleSelect()
     }

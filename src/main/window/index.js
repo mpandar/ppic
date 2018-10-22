@@ -9,7 +9,7 @@ const settingURL = process.env.NODE_ENV === 'development'
   : `file://${__dirname}/setting.html`
 
 class Window {
-  home() {
+  home () {
     var win = windowManager.get('home')
     if (win !== false) {
       return win
@@ -24,7 +24,7 @@ class Window {
     // homeWindow.create()
     return homeWindow
   }
-  setting() {
+  setting () {
     var win = windowManager.get('setting')
     if (win !== false) {
       return win
@@ -39,7 +39,7 @@ class Window {
     // settingWindow.create()
     return settingWindow
   }
-  getWebContentsByName(name) {
+  getWebContentsByName (name) {
     var win = windowManager.get(name)
     if (win !== false) {
       return win.object.webContents

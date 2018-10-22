@@ -1,10 +1,10 @@
-import sqlite3 from 'sqlite3'
+// import sqlite3 from 'sqlite3'
 import fs from 'fs'
-import fecha from 'fecha'
+// import fecha from 'fecha'
 import Sequelize from 'sequelize'
 import { app } from 'electron'
 class db {
-  constructor() {
+  constructor () {
     this.sequelize = null
     this.storage = null
     this.image = null
@@ -34,7 +34,7 @@ class db {
         },
         remark: {
           type: Sequelize.STRING,
-          defaultValue: "未命名",
+          defaultValue: '未命名'
         },
         filename: {
           type: Sequelize.STRING
@@ -52,7 +52,7 @@ class db {
       }
     )
     this.image.sync().catch(err => {
-      console.error('Unable to connect to the database:', err);
+      console.error('Unable to connect to the database:', err)
     })
 
     this.storage = this.sequelize.define(
@@ -67,7 +67,7 @@ class db {
         accessKey: Sequelize.STRING,
         secretKey: Sequelize.STRING,
         bucket: Sequelize.STRING,
-        origin: Sequelize.STRING, //其实存储的是uploadurl，懒得改名字了...
+        origin: Sequelize.STRING, // 其实存储的是uploadurl，懒得改名字了...
         url: Sequelize.STRING,
         storeType: {
           type: Sequelize.STRING,
@@ -76,7 +76,7 @@ class db {
       }
     )
     this.storage.sync().catch(err => {
-      console.error('Unable to connect to the database:', err);
+      console.error('Unable to connect to the database:', err)
     })
 
     this.config = this.sequelize.define(
@@ -91,7 +91,7 @@ class db {
       }
     )
     this.config.sync().catch(err => {
-      console.error('Unable to connect to the database:', err);
+      console.error('Unable to connect to the database:', err)
     })
     let config = { autostart: false, autozip: { on: false, level: 5 }, shortcut: 'ctrl+meta+c', storages: [1] }
     let ret = await this.config.findById(1)
@@ -104,7 +104,7 @@ class db {
     //       id: 1
     //     },
     //     defaults: {
-    //       config: 
+    //       config:
     //     }
     //   })
     // } catch (error) {
@@ -113,7 +113,8 @@ class db {
   }
 
   getStorage = async () => {
-    return await this.storage.findAll({ raw: true })
+    let ret = await this.storage.findAll({ raw: true })
+    return ret
   }
 
   addStorage = async (item) => {
@@ -153,7 +154,7 @@ class db {
     return await this.image.build(pic, { raw: true }).save()
   }
 
-  async fetchPicsByPage(page, size) {
+  async fetchPicsByPage (page, size) {
     let offset = (page - 1) * size
     let ret
     try {
@@ -170,24 +171,23 @@ class db {
     return ret
   }
 
-  async updateConfig(config) {
+  async updateConfig (config) {
     let task = await this.config.findById(1)
     task.config = JSON.stringify(config)
     let ret = await task.save({ fields: ['config'] })
     console.log('updateConfig', ret)
-    return ret;
+    return ret
   }
 
-  async fetchConfig() {
+  async fetchConfig () {
     try {
       let ret = await this.config.findById(1)
       let config = JSON.parse(ret.config)
       // console.log('fetchConfig2', config)
-      return config;
+      return config
     } catch (error) {
       console.log('fetchConfig', error)
     }
-
   }
 }
-export default new db
+export default new db()

@@ -3,8 +3,8 @@ import message from '../message'
 let error = []
 
 class PPicError extends Error {
-  constructor(code, msg) {
-    let errorMsg = msg ? msg : (error[code] == undefined ? "未知错误" : error[code])
+  constructor (code, msg) {
+    let errorMsg = msg || (error[code] === undefined ? '未知错误' : error[code])
     console.log('errorMsg', code, errorMsg)
     let err = { code: code, msg: errorMsg }
     console.log('PPicError', err)
@@ -18,7 +18,6 @@ PPicError.QiniuConnect = 1002
 PPicError.QiniuUpload = 1003
 
 PPicError.GetUpdatePackage = 1100
-
 
 error[PPicError.UnKnow] = '未知错误'
 error[PPicError.InVaildStorage] = '无效的存储引擎配置'

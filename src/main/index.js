@@ -1,4 +1,4 @@
-import { app, ipcMain, BrowserWindow, globalShortcut } from 'electron'
+import { app, ipcMain } from 'electron'
 import window from './window'
 import db from './db'
 import msg from './message'
@@ -15,13 +15,13 @@ if (process.env.NODE_ENV !== 'development') {
 }
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+// const winURL = process.env.NODE_ENV === 'development'
+//   ? `http://localhost:9080`
+//   : `file://${__dirname}/index.html`
 
 setTimeout(autoupdate, 5000)
 
-async function createWindow() {
+async function createWindow () {
   await db.init()
   msg.init()
   // let item = {

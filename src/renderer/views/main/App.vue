@@ -42,12 +42,12 @@ export default {
         silent: true
       })
     },
-    selectImage: function(item) {
+    selectImage: function (item) {
       this.currentSelect = item
       console.log('currentSelect', this.currentSelect)
     }
   },
-  data() {
+  data () {
     return {
       currentSelect: {},
       loading: true,
@@ -62,9 +62,8 @@ export default {
       // }
       // }
     }
-
   },
-  mounted: function() {
+  mounted: function () {
     ipcRenderer.send('app-config', { replyMsg: 'app-config-reply' })
     ipcRenderer.on('app-config-reply', (event, arg) => {
       console.log('app-config-reply', arg)
@@ -75,13 +74,12 @@ export default {
       }
       this.loading = false
       this.storages = arg.storages
-      ipcRenderer.send('shortcut-regist', { shortcut: arg.config.shortcut, replyMsg: null, from: "setting" })
+      ipcRenderer.send('shortcut-regist', { shortcut: arg.config.shortcut, replyMsg: null, from: 'setting' })
     })
 
     ipcRenderer.on('ppic-error', (event, arg) => {
-      this.$Message.error(arg.msg);
+      this.$Message.error(arg.msg)
     })
-
   }
 }
 </script>

@@ -36,7 +36,7 @@ const HTTPS = 2
 export default {
   name: 'MHeader',
   props: ['copyLinkUrl', 'copyMarkdownUrl', 'currentSelect'],
-  data() {
+  data () {
     return {
     }
   },
@@ -59,7 +59,7 @@ export default {
       return this.currentSelect.remark ? `![` + this.currentSelect.remark + `](` + this.currentSelect.url + `)` : ''
     }
 
-  },
+  }
 }
 </script>
 
