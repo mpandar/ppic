@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 import App from './App'
 import iView from 'iview'
-import { ipcRenderer } from 'electron'
+// import { ipcRenderer } from 'electron'
 import 'iview/dist/styles/iview.css' // 使用 CSS
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))

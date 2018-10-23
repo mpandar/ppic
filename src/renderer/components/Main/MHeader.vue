@@ -11,18 +11,18 @@
     <div class="pic-info">
       <div class="pic-info-line">
         <Input v-model="linkUrl" disabled>
-        <span slot="prepend" class="label">Link:</span>
-        <span slot="append" class="copy-btn" @click="copyLinkUrl(currentSelect)">
-          <Icon type="link"></Icon>
-        </span>
+          <span slot="prepend" class="label">Link:</span>
+          <span slot="append" class="copy-btn" @click="copyLinkUrl(currentSelect)">
+            <Icon type="link"></Icon>
+          </span>
         </Input>
       </div>
       <div class="pic-info-line">
         <Input v-model="markdownUrl" disabled>
-        <span slot="prepend" class="label">Markdown:</span>
-        <span slot="append" class="copy-btn" @click="copyMarkdownUrl(currentSelect)">
-          <Icon type="social-markdown"></Icon>
-        </span>
+          <span slot="prepend" class="label">Markdown:</span>
+          <span slot="append" class="copy-btn" @click="copyMarkdownUrl(currentSelect)">
+            <Icon type="social-markdown"></Icon>
+          </span>
         </Input>
       </div>
     </div>
@@ -30,9 +30,9 @@
 </template>
 <script>
 import { ipcRenderer } from 'electron'
-const AUTO = 0
-const HTTP = 1
-const HTTPS = 2
+// const AUTO = 0
+// const HTTP = 1
+// const HTTPS = 2
 export default {
   name: 'MHeader',
   props: ['copyLinkUrl', 'copyMarkdownUrl', 'currentSelect'],

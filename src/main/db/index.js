@@ -3,7 +3,7 @@ import fs from 'fs'
 // import fecha from 'fecha'
 import Sequelize from 'sequelize'
 import { app } from 'electron'
-class db {
+class Db {
   constructor () {
     this.sequelize = null
     this.storage = null
@@ -151,7 +151,8 @@ class db {
 
   addPic = async (pic) => {
     console.log('addPic', pic)
-    return await this.image.build(pic, { raw: true }).save()
+    let ret = await this.image.build(pic, { raw: true }).save()
+    return ret
   }
 
   async fetchPicsByPage (page, size) {
@@ -190,4 +191,4 @@ class db {
     }
   }
 }
-export default new db()
+export default new Db()

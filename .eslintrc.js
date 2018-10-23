@@ -1,16 +1,17 @@
 module.exports = {
-  root: false,
+  root: true,
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module'
   },
   env: {
-    browser: false,
-    node: false
+    browser: true,
+    node: true
   },
   extends: 'standard',
   globals: {
-    __static: true
+    __static: true,
+    process: false
   },
   plugins: [
     'html'
@@ -22,6 +23,7 @@ module.exports = {
     'generator-star-spacing': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    "newIsCap": false
+    "newIsCap": false,
+    'no-new': 0
   }
 }

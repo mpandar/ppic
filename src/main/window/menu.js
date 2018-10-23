@@ -1,4 +1,4 @@
-import { app, Menu } from 'electron'
+import { app, Menu, shell } from 'electron'
 import window from './index'
 const template = [
   {
@@ -26,7 +26,9 @@ const template = [
     submenu: [
       {
         label: '了解更多',
-        click () { require('electron').shell.openExternal('https://www.j2do.com') }
+        click () {
+          shell.openExternal('https://www.j2do.com')
+        }
       }
     ]
   }

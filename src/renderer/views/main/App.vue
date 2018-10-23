@@ -29,7 +29,7 @@ export default {
   methods: {
     copyLinkUrl: (item) => {
       clipboard.writeText(item.url)
-      let myNotification = new Notification('已复制', {
+      new Notification('已复制', {
         body: '链接已成功复制到剪切板',
         silent: true
       })
@@ -37,7 +37,7 @@ export default {
     copyMarkdownUrl: (item) => {
       let markdown = `![` + item.remark + `](` + item.url + `)`
       clipboard.writeText(markdown)
-      let myNotification = new Notification('已复制', {
+      new Notification('已复制', {
         body: 'Markdown链接已成功复制到剪切板',
         silent: true
       })

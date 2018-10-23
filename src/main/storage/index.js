@@ -4,7 +4,7 @@ import fecha from 'fecha'
 import md5 from 'md5'
 import db from '../db'
 import PPicError from '../error'
-class storage {
+class Storage {
   constructor () {
     this.type = null
     this.id = null
@@ -26,14 +26,14 @@ class storage {
     // console.log('init storages', this.storages)
   }
   getStorageInstance () {
-    if (this.storages.length == 0) {
+    if (this.storages.length === 0) {
       throw new PPicError(PPicError.InVaildStorage)
     }
     if (this.storageIndex >= this.storages.length) {
       this.storageIndex = 0
     }
     for (let key in this.storages) {
-      if (key == this.storageIndex) {
+      if (key === this.storageIndex) {
         this.storageIndex++
         return this.storages[key]
       }
@@ -84,4 +84,4 @@ class storage {
 
   }
 }
-export default new storage()
+export default new Storage()

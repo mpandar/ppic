@@ -2,7 +2,7 @@ import { ipcMain, globalShortcut } from 'electron'
 import db from '../db'
 import window from '../window'
 import storage from '../storage'
-class message {
+class Message {
   constructor () {
     this.regist('storage-config')
     this.regist('storage-save')
@@ -100,4 +100,4 @@ class message {
     ipc.send('ppic-error', msg)
   }
 }
-export default new message()
+export default new Message()

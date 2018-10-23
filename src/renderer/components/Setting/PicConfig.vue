@@ -95,7 +95,7 @@ export default {
     },
     addStorage (item) {
       console.log('addStorage', item)
-      if (item.value != '') {
+      if (item.value !== '') {
         this.currentStorage = {}
         this.currentStorage.storeType = item.value
         this.currentStorage.storeName = item.label

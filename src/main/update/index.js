@@ -75,12 +75,12 @@ function checkVersion () {
 ipcMain.on('download', async (event, arg) => {
   console.log('done!', arg.file.url)
   let file = process.env.HOME + '/Downloads' + url.parse(arg.file.url).pathname
-  console.log('download', fs.existsSync(file), md5File.sync(file), arg.file.md5, md5File.sync(file) == arg.file.md5)
+  console.log('download', fs.existsSync(file), md5File.sync(file), arg.file.md5, md5File.sync(file) === arg.file.md5)
 
-  if (fs.existsSync(file) && md5File.sync(file) == arg.file.md5) {
+  if (fs.existsSync(file) && md5File.sync(file) === arg.file.md5) {
 
   } else {
-    let d = await download(arg.file.url, process.env.HOME + '/Downloads')
+    await download(arg.file.url, process.env.HOME + '/Downloads')
   }
 
   let params = {
